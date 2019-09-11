@@ -9,6 +9,7 @@ import TaskGridView from './TaskGridView';
 
 const TaskList = ({ taskGroupData, sortBy, currentFilter, order, view, toggleTaskStatus, taskGroupId }) => (
   <ul className="list-group">
+
     <li className="list-group-item list-header">
       <div className="col col-6 p-0">
         <button className="btn btn-primary">Add Task</button>
