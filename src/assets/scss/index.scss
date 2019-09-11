@@ -1,0 +1,50 @@
+@import url('https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css');
+@import url('https://fonts.googleapis.com/css?family=Montserrat:500&display=swap');
+@import './customCheckbox';
+@import './variables';
+
+html {
+  font-size: 14px;
+}
+
+body {
+  margin: 0;
+  font-family: 'Montserrat', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+.text-light {
+  color: $gray !important;
+}
+
+@keyframes fade {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.rotated {
+  animation: rotate 1s ease 1;
+}
+
+@keyframes rotate {
+  0% {
+    opacity: 0.5;
+    transform: rotate3d(1, 0, 0, 90deg);
+  }
+
+  100% {
+    opacity: 1;
+    transform: rotate3d(1, 0, 0, 0deg);
+  }
+}

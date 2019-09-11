@@ -1,0 +1,134 @@
+@import './variables';
+
+.drop-area {
+  border: 1px dotted #ddd;
+  padding: 1rem;
+  margin-top: 1rem;
+}
+
+.drop-area.dropover {
+  border-color: #222;
+
+  * {
+    pointer-events: none;
+  }
+}
+
+.drop-area .row:empty {
+  position: relative;
+  min-height: 100%;
+}
+
+.drop-area .row:empty::after {
+  position: absolute;
+  content: 'Drop your tasks here';
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #aaa;
+  font-size: 1.25rem;
+}
+
+
+.task-group {
+  max-width: 1100px;
+
+  .list-group-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .badge {
+      border-radius: 10px;
+      border: none;
+      padding: 5px 10px;
+      text-transform: uppercase;
+      font-weight: 600;
+      font-size: 0.65rem !important;
+    }
+  }
+
+  .list-group-item .col {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    >* {
+      flex-basis: 33.33%;
+      text-align: center;
+    }
+  }
+
+  .list-group-item .col:first-child {
+    justify-content: flex-start;
+
+    >* {
+      flex-basis: auto;
+      text-align: left;
+    }
+  }
+
+  .list-header {
+    .btn-link {
+      text-decoration: none;
+      padding: 0;
+
+      .icon {
+        display: inline-block;
+        transition: all 0.5s ease;
+        animation: fade 0.5s ease forwards 1;
+      }
+    }
+
+    .btn-link:hover,
+    .btn-link.active {
+      color: darken($color: $gray, $amount: 50%) !important;
+    }
+  }
+}
+
+.my-navbar-nav {
+  flex-direction: row;
+
+  .nav-item {
+    padding: 0 1rem;
+  }
+}
+
+.userIcon {
+  max-width: 1.5rem;
+  opacity: 0.8;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 640px) {
+  .my-navbar-nav {
+    flex-direction: column;
+  }
+}
+
+.card {
+  border-radius: .5rem;
+  overflow: hidden;
+  padding: 0.5rem;
+  border: none;
+  box-shadow: 0 1px 4px rgba($color: #000000, $alpha: 0.2);
+
+  >* {
+    border: none;
+    padding: 0.5rem;
+  }
+
+  .progress {
+    height: 0.5rem;
+  }
+
+  .card-footer {
+    font-size: 0.8rem;
+    font-weight: 700;
+  }
+}

@@ -1,26 +1,26 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { HashRouter, Route, Switch } from 'react-router-dom';
+import './assets/scss/App.scss';
+import TaskGroup from './components/Task/TaskGroup';
+import Navbar from './components/Navbar/Navbar';
+import TaskGroupList from './components/Task/TaskGroupList';
+import User from './components/User/User';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+  render() {
+    return (
+      <div className="App">
+        <HashRouter>
+          <Navbar />
+          <Switch>
+            <Route exact path="/" component={TaskGroupList} />
+            <Route path="/tasks/:id" component={TaskGroup} />
+            <Route path="/my-tasks" component={User} />
+          </Switch>
+        </HashRouter>
+      </div>
+    );
+  }
 }
 
 export default App;
