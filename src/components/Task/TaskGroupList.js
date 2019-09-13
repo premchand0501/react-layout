@@ -2,6 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getDateFormatted } from '../../utilities/utility';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 const TaskGroupList = ({ taskGroupList }) => {
   return (
@@ -9,6 +11,12 @@ const TaskGroupList = ({ taskGroupList }) => {
       <div className="container mt-3">
         <h1 className="mb-3">Task Boards</h1>
         <div className="row">
+          <Link className="col col-4 text-dark text-decoration-none" to={`/create-new-board`}>
+            <div className="card text-center h-100 d-flex align-item-center justify-content-center">
+              <span><FontAwesomeIcon icon={faPlus} /><br /></span>
+              <span>Create New Board</span>
+            </div>
+          </Link>
           {
             taskGroupList.map((item, index) => (
               <Link className="col col-4 text-dark text-decoration-none" to={`/tasks/${item.id}`} key={index}>

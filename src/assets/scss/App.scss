@@ -132,3 +132,11 @@
     font-weight: 700;
   }
 }
+
+.form-container {
+  padding: 1rem;
+  max-width: 420px;
+  border-radius: 1rem;
+  box-shadow: 0 2px 4px rgba($color: $dark, $alpha: 0.2);
+  margin-top: 10vh;
+}

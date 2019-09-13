@@ -36,3 +36,7 @@ export const sortTasksByUser = (_taskList, order) => {
   });
   return order ? sortedByPriority.reverse() : sortedByPriority;
 }
+
+export const isEmail = (emailStr) => {
+  return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(emailStr);
+}
