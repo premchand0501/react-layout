@@ -1,11 +1,11 @@
 import React from 'react';
 import { getDateFormatted } from '../../utilities/utility';
 import { connect } from 'react-redux';
-import { taskListActionTypes, setDraggingTaskId } from '../../store/actions/taskGroupActions';
 import Draggable from '../UI/Draggable';
+import { setDraggingTaskId } from '../../store/actions/taskListActions';
 
-const TaskColumn = ({ taskListItem, handleDragStart, taskGroupData }) => (
-  <Draggable handleDragStart={() => handleDragStart(taskGroupData.id, taskListItem.id)}
+const TaskColumn = ({ taskListItem, handleDragStart }) => (
+  <Draggable handleDragStart={() => handleDragStart(taskListItem._id, taskListItem.status)}
     className="col col-12 text-dark text-decoration-none rotated mb-3"
     onDragOver={(e) => e.preventDefault()}>
     <div className="card">
@@ -22,7 +22,7 @@ const TaskColumn = ({ taskListItem, handleDragStart, taskGroupData }) => (
           <span>
             <img src={taskListItem.assignee && taskListItem.assignee.profileImage !== '' ? taskListItem.assignee.profileImage :
               require('../../assets/img/user.png')} alt="profile img" className="img-fluid userIcon"
-              title={taskListItem.assignee && taskListItem.assignee.name ? taskListItem.assignee.name : ''} />
+              title={taskListItem.assignee && taskListItem.assignee.assigneeName ? taskListItem.assignee.assigneeName : ''} />
           </span>
           <span>{
             (taskListItem.endDate && taskListItem.endDate !== '') ?
@@ -35,9 +35,9 @@ const TaskColumn = ({ taskListItem, handleDragStart, taskGroupData }) => (
   </Draggable>
 )
 const mapDispatchToProps = dispatch => ({
-  handleDragStart: (taskGroupId, taskListItemId) => {
-    // console.log(taskGroupId, taskListItemId);
-    dispatch(setDraggingTaskId(taskListActionTypes.DRAG_START, taskGroupId, taskListItemId));
+  handleDragStart: (id, status) => {
+    console.log(id, status);
+    dispatch(setDraggingTaskId({ id, status }));
   }
 })
 export default connect(null, mapDispatchToProps)(TaskColumn);

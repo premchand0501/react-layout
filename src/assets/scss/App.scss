@@ -35,8 +35,6 @@
 
 
 .task-group {
-  max-width: 1100px;
-
   .list-group-item {
     display: flex;
     align-items: center;
@@ -139,4 +137,19 @@
   border-radius: 1rem;
   box-shadow: 0 2px 4px rgba($color: $dark, $alpha: 0.2);
   margin-top: 10vh;
+}
+
+.title-header {
+  font-weight: 900;
+  text-transform: uppercase;
+  color: #444;
+  margin-bottom: 0.5rem;
+  font-size: 0.75rem;
+}
+
+.taskDetails {
+  h2 {
+    text-transform: uppercase;
+    margin: 0;
+  }
 }

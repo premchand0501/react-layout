@@ -1,27 +1,49 @@
-export const taskListActionTypes = {
-  DUE_DATE: 'DUE_DATE',
-  PRIORITY: 'PRIORITY',
-  USER: 'USER',
-  TOGGLE_STATUS: 'TOGGLE_STATUS',
-  TOGGLE_VIEW: 'TOGGLE_VIEW',
-  DRAG_START: 'DRAG_START',
+import { fetchTaskGroupData, fetchTaskGroupDetails } from "../../utilities/service";
+
+export const fetchTaskGroupActions = {
+  START: 'TG_START',
+  SUCCESS: 'TG_SUCCESS',
+  ERROR: 'TG_ERROR',
+  DETAILS: 'TG_DETAILS',
 }
-export const sortByDueDate = (type, id, order) => ({
-  type,
-  id,
-  order
-});
-export const toggleStatus = (type, taskId, id, flag) => ({
-  type,
-  taskId,
-  id,
-  flag
-});
-export const toggleView = (type) => ({
-  type,
-});
-export const setDraggingTaskId = (type, taskId, id) => ({
-  type,
-  taskId,
-  id,
-});
+
+export const fetchTaskGroupBegins = () => ({
+  type: fetchTaskGroupActions.START
+})
+
+export const fetchTaskGroupSuccess = (payload) => ({
+  type: fetchTaskGroupActions.SUCCESS,
+  payload
+})
+
+export const fetchTaskGroupError = (payload) => ({
+  type: fetchTaskGroupActions.ERROR,
+  payload
+})
+export const fetchTaskGroup = () => {
+  return async dispatch => {
+    dispatch(fetchTaskGroupBegins());
+    try {
+      const resData = await fetchTaskGroupData();
+      resData.status === 1 ?
+        dispatch(fetchTaskGroupSuccess(resData.data)) :
+        dispatch(fetchTaskGroupError(resData))
+    }
+    catch (err) {
+      dispatch(fetchTaskGroupError(err))
+    }
+  }
+};
+
+export const fetchTaskGroupDetailsAction = (payload) => ({
+  type: fetchTaskGroupActions.DETAILS,
+  payload
+})
+export const fetchTaskGroupDetailsBy = (id) => {
+  return async dispatch => {
+    const resData = await fetchTaskGroupDetails(id);
+    resData.status === 1 ?
+      dispatch(fetchTaskGroupDetailsAction(resData.data)) :
+      dispatch(fetchTaskGroupError(resData));
+  }
+}

@@ -1,17 +1,16 @@
 import React from 'react';
-import { getDateFormatted } from '../../utilities/utility';
+import { Link } from 'react-router-dom';
+import { getDateFormatted, priorities } from '../../utilities/utility';
 
-const priorities = ["low", "med", "high"];
-
-const TaskItem = ({ taskListItem, toggleTaskStatus, taskGroupData }) => (
+const TaskItem = ({ taskListItem, toggleTaskStatus }) => (
   <li className="list-group-item rotated">
     <div className="col col-6 p-0">
       <label className="cb-container">
-        <input type="checkbox" onChange={() => toggleTaskStatus(taskGroupData.id, taskListItem.id, !taskListItem.status)}
+        <input type="checkbox" onChange={() => toggleTaskStatus(taskListItem._id, !taskListItem.status)}
           checked={taskListItem.status} />
         <span className="checkmark">{taskListItem.status}</span>
       </label>
-      <span>{taskListItem.subTaskName}</span>
+      <Link to={`/task-details/${taskListItem._id}`} className="text-dark">{taskListItem.subTaskName}</Link>
     </div>
     <div className="col col-6 p-0">
       <span>{
@@ -27,7 +26,7 @@ const TaskItem = ({ taskListItem, toggleTaskStatus, taskGroupData }) => (
       <span>
         <img src={taskListItem.assignee && taskListItem.assignee.profileImage !== '' ? taskListItem.assignee.profileImage :
           require('../../assets/img/user.png')} alt="profile img" className="img-fluid userIcon"
-          title={taskListItem.assignee && taskListItem.assignee.name ? taskListItem.assignee.name : ''} />
+          title={taskListItem.assignee && taskListItem.assignee.assigneeName ? taskListItem.assignee.assigneeName : ''} />
       </span>
     </div>
   </li>

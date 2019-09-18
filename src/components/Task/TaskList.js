@@ -3,11 +3,11 @@ import TaskItem from './TaskItem';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faArrowDown } from '@fortawesome/free-solid-svg-icons';
-import { taskListActionTypes, toggleStatus } from '../../store/actions/taskGroupActions';
 import { connect } from 'react-redux';
 import TaskGridView from './TaskGridView';
+import { taskListActionTypes, toggleTaskStatus } from '../../store/actions/taskListActions';
 
-const TaskList = ({ taskGroupData, sortBy, currentFilter, order, view, toggleTaskStatus, taskGroupId }) => (
+const TaskList = ({ taskListData, sortBy, currentFilter, order, view, toggleTaskStatus }) => (
   <ul className="list-group">
 
     <li className="list-group-item list-header">
@@ -50,23 +50,22 @@ const TaskList = ({ taskGroupData, sortBy, currentFilter, order, view, toggleTas
     </li>
     {
       view ?
-        taskGroupData[taskGroupId].taskList.map((taskListItem, index) => (
-          <TaskItem taskListItem={taskListItem} key={index} taskGroupData={taskGroupData[taskGroupId]}
+        taskListData.map((taskListItem, index) => (
+          <TaskItem taskListItem={taskListItem} key={index} taskListData={taskListData}
             toggleTaskStatus={toggleTaskStatus} />
         )) : (
-          <TaskGridView taskGroupData={taskGroupData[taskGroupId]} dropEl={toggleTaskStatus} />
+          <TaskGridView taskListData={taskListData} dropEl={toggleTaskStatus} />
         )
     }
   </ul>
 );
 const mapStateToProps = (state) => ({
-  view: state.taskGroupReducer.view,
-  taskGroupData: state.taskGroupReducer.taskGroupData,
+  view: state.taskListReducer.view,
 });
 const mapDispatchToProps = (dispatch) => ({
-  toggleTaskStatus: (taskGroupId, taskListItemId, status) => {
-    // console.log(taskGroupId, taskListItemId, status);
-    dispatch(toggleStatus(taskListActionTypes.TOGGLE_STATUS, taskGroupId, taskListItemId, status));
+  toggleTaskStatus: (id, status) => {
+    console.log(id, status);
+    dispatch(toggleTaskStatus(id, status));
   }
 })
 export default connect(mapStateToProps, mapDispatchToProps)(TaskList);

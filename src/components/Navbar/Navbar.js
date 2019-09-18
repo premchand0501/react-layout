@@ -1,10 +1,10 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, withRouter } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 
-const Navbar = () => {
-  return (
+const Navbar = ({ location }) => (
+  !/^\/(login|register)$/g.test(location.path) ? (
     <nav className="navbar navbar-light bg-light">
       <div className="collapse navbar-collapse show" id="navbarSupportedContent">
         <ul className="navbar-nav my-navbar-nav">
@@ -21,7 +21,6 @@ const Navbar = () => {
           </li>
         </ul>
       </div>
-    </nav>
-  )
-}
-export default Navbar;
+    </nav>) : null
+)
+export default withRouter(Navbar);

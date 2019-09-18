@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
-const TaskGridView = ({ taskGroupData, taskGroupId, taskListItemId, dropEl }) => (
+const TaskGridView = ({ taskListData, draggingTask, dropEl }) => (
   <div className="container-fluid p-3" style={{ border: '1px solid #ddd' }}>
     <div className="row">
       <div className="col col-6">
@@ -28,20 +28,20 @@ const TaskGridView = ({ taskGroupData, taskGroupId, taskListItemId, dropEl }) =>
       </div>
     </div>
     <div className="row">
-      <Droppable className="col col-6" handleDrop={(e) => dropEl(taskGroupId, taskListItemId, false)}>
+      <Droppable className="col col-6" handleDrop={() => dropEl(draggingTask.id, !draggingTask.status)}>
         <div className="row" onDragOver={(e) => e.preventDefault()}>
           {
-            taskGroupData.taskList.filter(item => item.status === false).map((taskListItem, index) => (
-              <TaskColumn taskListItem={taskListItem} key={index} taskGroupData={taskGroupData} />
+            taskListData.filter(item => item.status === false).map((taskListItem, index) => (
+              <TaskColumn taskListItem={taskListItem} key={index} taskGroupData={taskListData} />
             ))
           }
         </div>
       </Droppable>
-      <Droppable className="col col-6" handleDrop={(e) => dropEl(taskGroupId, taskListItemId, true)}>
+      <Droppable className="col col-6" handleDrop={() => dropEl(draggingTask.id, !draggingTask.status)}>
         <div className="row" onDragOver={(e) => e.preventDefault()}>
           {
-            taskGroupData.taskList.filter(item => item.status === true).map((taskListItem, index) => (
-              <TaskColumn taskListItem={taskListItem} key={index} taskGroupData={taskGroupData} />
+            taskListData.filter(item => item.status === true).map((taskListItem, index) => (
+              <TaskColumn taskListItem={taskListItem} key={index} taskGroupData={taskListData} />
             ))
           }
         </div>
@@ -50,7 +50,7 @@ const TaskGridView = ({ taskGroupData, taskGroupId, taskListItemId, dropEl }) =>
   </div>
 )
 const mapStateToProps = (state) => ({
-  taskGroupId: state.taskGroupReducer.taskGroupId,
-  taskListItemId: state.taskGroupReducer.taskListItemId,
+  // taskGroupId: state.taskGroupReducer.taskGroupId,
+  draggingTask: state.taskListReducer.draggingTask,
 })
 export default connect(mapStateToProps, null)(TaskGridView);
