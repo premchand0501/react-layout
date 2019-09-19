@@ -15,17 +15,21 @@ class TaskGroup extends React.Component {
   render() {
     const { taskGroupData, taskListData, match, sortBy, currentFilter, order, view, toggleViewFunc } = { ...this.props };
     return taskGroupData ?
-      <div className="container task-group">
+      <div className="container task-group mt-3">
         <div className="row">
           <div className="col col-12">
             <h1 className="d-flex align-items-center justify-content-between">
               <span>{taskGroupData.taskName}</span>
-              <button className="btn btn-outline-dark" onClick={toggleViewFunc} title="Toggle grid/list view">
+              <button className="btn btn-outline-dark pl-1 pr-1" onClick={toggleViewFunc} title="Toggle grid/list view" style={{ minWidth: '100px' }}>
                 {
                   view ? <FontAwesomeIcon icon={faList} /> : <FontAwesomeIcon icon={faColumns} />
                 }
+                {
+                  (view ? ' List' : ' Grid') + ' View'
+                }
               </button>
             </h1>
+            <p>{taskGroupData.taskDesc}</p>
             <TaskList
               taskListData={taskListData}
               taskGroupId={match.params.id}

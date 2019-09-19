@@ -16,18 +16,6 @@ const TaskGridView = ({ taskListData, draggingTask, dropEl }) => (
       </div>
     </div>
     <div className="row">
-      <div className="col col-6">
-        <button className="btn btn-outline-dark w-100" title="Add new task">
-          <FontAwesomeIcon icon={faPlus} />
-        </button>
-      </div>
-      <div className="col col-6">
-        <button className="btn btn-outline-dark w-100" title="Add new completed task">
-          <FontAwesomeIcon icon={faPlus} />
-        </button>
-      </div>
-    </div>
-    <div className="row">
       <Droppable className="col col-6" handleDrop={() => dropEl(draggingTask.id, !draggingTask.status)}>
         <div className="row" onDragOver={(e) => e.preventDefault()}>
           {

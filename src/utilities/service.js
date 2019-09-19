@@ -39,6 +39,32 @@ export const fetchTaskDetailsData = async (id) => {
   return data;
 }
 
+export const fetchAttachedPictureData = async (id) => {
+  const res = await fetch(`${baseUrl}/task-medias/${id}`);
+  const data = await res.json();
+  return data;
+}
+
+export const removeAttachedPictureData = async (id) => {
+  const res = await fetch(`${baseUrl}/delete-media/${id}`, {
+    method: 'DELETE'
+  });
+  const data = await res.json();
+  return data;
+}
+
+export const uploadAttachedPictureData = async (id, file) => {
+  const formData = new FormData();
+  formData.append('media', file);
+  formData.append('_id', id);
+  const res = await fetch(`${baseUrl}/upload-media`, {
+    body: formData,
+    method: 'POST'
+  });
+  const data = await res.json();
+  return data;
+}
+
 export const toggleTaskStatusFunc = async (id, flag) => {
   const res = await fetch(`${baseUrl}/update-task`, {
     body: JSON.stringify({

@@ -28,7 +28,7 @@ class TaskGroupList extends React.Component {
               taskGroupList.map((item, index) => (
                 <Link className="col col-4 text-dark text-decoration-none"
                   to={`/tasks/${item._id}`} key={index}>
-                  <div className="card">
+                  <div className="card h-100">
                     <div className="card-header bg-white">
                       <div className="progress">
                         <div className="progress-bar" role="progressbar" style={{ width: '25%' }}></div>
