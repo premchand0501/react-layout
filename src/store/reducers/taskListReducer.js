@@ -22,16 +22,25 @@ const _taskListState = {
   draggingTask: {
     id: -1,
     status: false,
+    taskBoardId: '',
   },
 }
 
 const taskListReducer = (taskListState = _taskListState, action) => {
+  const { taskListData } = taskListState;
+  let sorted = [];
   switch (action.type) {
     case fetchTaskListActions.SUCCESS:
       return { ...taskListState, taskListData: action.payload };
     case taskListActionTypes.DUE_DATE:
+      sorted = taskListData.sort((prev, curr) => new Date(prev.startDate).getTime() - new Date(curr.startDate).getTime());
+      return { ...taskListState, td: action.order ? sorted : sorted.reverse(), currentFilter: action.type, order: !action.order };
     case taskListActionTypes.PRIORITY:
+      sorted = taskListData.sort((prev, curr) => prev.priority - curr.priority);
+      return { ...taskListState, taskListData: action.order ? sorted : sorted.reverse(), currentFilter: action.type, order: !action.order };
     case taskListActionTypes.USER:
+      sorted = taskListData.sort((prev, curr) => prev.assignee.assigneeName - curr.assignee.assigneeName);
+      return { ...taskListState, taskListData: action.order ? sorted : sorted.reverse(), currentFilter: action.type, order: !action.order };
     case taskListActionTypes.TOGGLE_VIEW:
       localStorage.setItem('view', !taskListState.view);
       return { ...taskListState, view: !taskListState.view }

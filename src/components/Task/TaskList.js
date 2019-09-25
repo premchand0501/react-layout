@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import TaskItem from './TaskItem';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -9,44 +10,52 @@ import { taskListActionTypes, toggleTaskStatus } from '../../store/actions/taskL
 
 const TaskList = ({ taskListData, sortBy, currentFilter, order, view, toggleTaskStatus }) => (
   <ul className="list-group">
-
     <li className="list-group-item list-header">
-      <div className="col col-6 p-0">
-        <button className="btn btn-primary">Add Task</button>
-      </div>
-      <div className="col col-6 p-0">
-        <button className={`btn btn-link text-light${currentFilter === taskListActionTypes.DUE_DATE ? ' active' : ''}`}
-          onClick={() => sortBy(taskListActionTypes.DUE_DATE)}>Due
-          {
-            currentFilter === taskListActionTypes.DUE_DATE ? (
-              <span style={{ transform: `rotate(${order ? 180 : 0}deg)` }} className="icon">
-                <FontAwesomeIcon icon={faArrowDown} />
-              </span>
-            ) : ''
-          }
-        </button>
-        <button className={`btn btn-link text-light${currentFilter === taskListActionTypes.PRIORITY ? ' active' : ''}`}
-          onClick={() => sortBy(taskListActionTypes.PRIORITY)}>Priority
-          {
-            currentFilter === taskListActionTypes.PRIORITY ? (
-              <span style={{ transform: `rotate(${order ? 180 : 0}deg)` }} className="icon">
-                <FontAwesomeIcon icon={faArrowDown} />
-              </span>
-            ) : ''
-          }
-        </button>
-        <button className={`btn btn-link text-light${currentFilter === taskListActionTypes.USER ? ' active' : ''}`}
-          onClick={() => sortBy(taskListActionTypes.USER)}>
-          <FontAwesomeIcon icon={faUser} />
-          {
-            currentFilter === taskListActionTypes.USER ? (
-              <span style={{ transform: `rotate(${order ? 180 : 0}deg)` }} className="icon">
-                <FontAwesomeIcon icon={faArrowDown} />
-              </span>
-            ) : ''
-          }
-        </button>
-      </div>
+      {
+        taskListData && taskListData.length ? (
+          <div className="col col-6 p-0">
+            <Link to={`/add-task/0/${taskListData[0].taskBoardId}`} className="btn btn-primary">Add Task</Link>
+          </div>
+        ) : ''
+      }
+      {
+        view ? (
+          <div className="col col-6 p-0">
+            <button className={`btn btn-link text-light${currentFilter === taskListActionTypes.DUE_DATE ? ' active' : ''}`}
+              onClick={() => sortBy(taskListActionTypes.DUE_DATE)}>Due
+                  {
+                currentFilter === taskListActionTypes.DUE_DATE ? (
+                  <span style={{ transform: `rotate(${order ? 180 : 0}deg)` }} className="icon">
+                    <FontAwesomeIcon icon={faArrowDown} />
+                  </span>
+                ) : ''
+              }
+            </button>
+            <button className={`btn btn-link text-light${currentFilter === taskListActionTypes.PRIORITY ? ' active' : ''}`}
+              onClick={() => sortBy(taskListActionTypes.PRIORITY)}>Priority
+                  {
+                currentFilter === taskListActionTypes.PRIORITY ? (
+                  <span style={{ transform: `rotate(${order ? 180 : 0}deg)` }} className="icon">
+                    <FontAwesomeIcon icon={faArrowDown} />
+                  </span>
+                ) : ''
+              }
+            </button>
+            <button className={`btn btn-link text-light${currentFilter === taskListActionTypes.USER ? ' active' : ''}`}
+              onClick={() => sortBy(taskListActionTypes.USER)}>
+              <FontAwesomeIcon icon={faUser} />
+              {
+                currentFilter === taskListActionTypes.USER ? (
+                  <span style={{ transform: `rotate(${order ? 180 : 0}deg)` }} className="icon">
+                    <FontAwesomeIcon icon={faArrowDown} />
+                  </span>
+                ) : ''
+              }
+            </button>
+          </div>
+        ) : ''
+      }
+
     </li>
     {
       view ?
@@ -63,9 +72,9 @@ const mapStateToProps = (state) => ({
   view: state.taskListReducer.view,
 });
 const mapDispatchToProps = (dispatch) => ({
-  toggleTaskStatus: (id, status) => {
-    console.log(id, status);
-    dispatch(toggleTaskStatus(id, status));
+  toggleTaskStatus: (id, status, taskBoardId) => {
+    console.log(id, status, taskBoardId);
+    dispatch(toggleTaskStatus(id, status, 'list', taskBoardId));
   }
 })
 export default connect(mapStateToProps, mapDispatchToProps)(TaskList);

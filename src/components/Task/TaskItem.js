@@ -6,7 +6,7 @@ const TaskItem = ({ taskListItem, toggleTaskStatus }) => (
   <li className="list-group-item rotated">
     <div className="col col-6 p-0">
       <label className="cb-container">
-        <input type="checkbox" onChange={() => toggleTaskStatus(taskListItem._id, !taskListItem.status)}
+        <input type="checkbox" onChange={() => toggleTaskStatus(taskListItem._id, !taskListItem.status, taskListItem.taskBoardId)}
           checked={taskListItem.status} />
         <span className="checkmark">{taskListItem.status}</span>
       </label>

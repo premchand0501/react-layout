@@ -1,9 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { fetchTaskDetails, uploadMediaForTask, fetchAttachedPicture, removeMediaForTask, startUploadingMedia } from '../../store/actions/taskDetailActions';
+import { fetchTaskDetails, uploadMediaForTask, fetchAttachedPicture, removeMediaForTask, startUploadingMedia, setEditingTask } from '../../store/actions/taskDetailActions';
 import { priorities } from '../../utilities/utility';
 import { baseUrl } from '../../utilities/service';
 import { toggleTaskStatus } from '../../store/actions/taskListActions';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPencilAlt, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
 class TaskDetails extends React.Component {
   state = {
@@ -13,7 +15,8 @@ class TaskDetails extends React.Component {
     inputMediaUrl: '',
     inputMediaName: '',
     file: '',
-    error: ''
+    error: '',
+    editTaskFlag: false,
   }
   componentDidMount() {
     this.props.getTaskDetails(this.props.match.params.id);
@@ -54,14 +57,18 @@ class TaskDetails extends React.Component {
       }
     }
   }
+  closeEditForm() {
+    this.setState({
+      editTaskFlag: false
+    })
+  }
   upload(e, id) {
     e.preventDefault();
     this.props.uploadMediaForTaskFunc(id, this.state.file);
   }
   render() {
-    const { taskDetailsReducer, toggleTaskStatus, removeMediaForTaskFunc, uploadMedia } = this.props;
+    const { taskDetailsReducer, toggleTaskStatus, removeMediaForTaskFunc, uploadMedia, setEditingTaskFunc, history } = this.props;
     const { taskDetails, taskMedia, uploadMediaStatus } = taskDetailsReducer;
-    console.log(taskMedia);
     return (
       taskDetails ? (
         <div className="container mt-3 mb-3 taskDetails">
@@ -69,7 +76,20 @@ class TaskDetails extends React.Component {
             <div className="col col-8">
               <div className="card w-100">
                 <div className="card-body">
-                  <h2 className="text-capitalised mb-3">{taskDetails.subTaskName}</h2>
+                  <h2 className="text-capitalised mb-3">
+                    <button className="btn btn-outline-dark mr-3" onClick={() => history.go(-1)}>
+                      <FontAwesomeIcon icon={faArrowLeft} />&nbsp;Task List
+                    </button>
+                    <button className="btn btn-outline-dark btn-sm editBtn"
+                      onClick={() => setEditingTaskFunc(taskDetails, history)}>
+                      <FontAwesomeIcon icon={faPencilAlt} />
+                    </button>
+                  </h2>
+                  <h2 className="text-capitalised mb-3">
+                    <span>
+                      {taskDetails.subTaskName}
+                    </span>
+                  </h2>
                   <p className="title-header">Description</p>
                   {
                     taskDetails.subTaskDesc ? (
@@ -82,63 +102,25 @@ class TaskDetails extends React.Component {
                       <p className="title-header">Attached Pictures</p>
                       {
                         taskMedia && taskMedia.length > 0 ? (
-                          <div className="col col-12 mt-3">
-                            <div className="row">
-                              {
-                                taskMedia.map((item, index) => (
-                                  <div className="col col-6 p-0 mb-3" key={index}>
-                                    <div className="imgWrapper" style={{
-                                      backgroundImage: `url(${baseUrl}/${item.path})`
-                                    }}>
-                                      {/* <img src={`${baseUrl}/${item.path}`} alt={item.filename} className="img-fluid" /> */}
-                                      <p>{item.filename}</p>
-                                      <button className="btn btn-danger deleteBtn"
-                                        onClick={() => removeMediaForTaskFunc(taskDetails._id, item._id)}>&times;</button>
-                                    </div>
+                          <div className="row">
+                            {
+                              taskMedia.map((item, index) => (
+                                <div className="col col-6 mb-3 picture" key={index}>
+                                  <div className="imgWrapper" style={{
+                                    backgroundImage: `url(${baseUrl}/${item.path})`
+                                  }}>
+                                    <p>{item.filename}</p>
+                                    <button className="btn btn-danger deleteBtn"
+                                      onClick={() => removeMediaForTaskFunc(taskDetails._id, item._id)}>&times;</button>
                                   </div>
-                                ))
-                              }
-                            </div>
+                                </div>
+                              ))
+                            }
                           </div>
                         ) : ''
                       }
-                      {
-                        uploadMediaStatus ? (
-                          <div className="uploadMediaForm">
-                            <form onSubmit={(e) => this.upload(e, taskDetails._id)}>
-                              <h3>Upload Media for the task</h3>
-                              <div className="input-group mb-3 mt-3">
-                                <div className="custom-file">
-                                  <input type="file" className="custom-file-input" accept="image/*"
-                                    id="inputGroupFile01" onChange={(e) => this.handleFileChange(e)} />
-                                  <label className="custom-file-label" htmlFor="inputGroupFile01">{
-                                    this.state.inputMediaName ? this.state.inputMediaName : 'Choose file'
-                                  }</label>
-                                </div>
-                              </div>
-                              {
-                                this.state.error !== '' ? (
-                                  <p className="text-danger">{this.state.error}</p>
-                                ) : ''
-                              }
-                              {
-                                this.state.inputMediaUrl ?
-                                  <img src={this.state.inputMediaUrl} alt={this.state.inputMediaName} className="img-fluid" />
-                                  : ''
-                              }
-                              <div className="input-group mt-3">
-                                <button className="btn btn-primary" type="submit">Upload</button>
-                                <button className="btn btn-link-danger" type="reset"
-                                  onClick={() => uploadMedia(!uploadMediaStatus)}>Close</button>
-                              </div>
-                            </form>
-                          </div>
-                        ) :
-                          (
-                            <button className="btn btn-outline-dark"
-                              onClick={() => uploadMedia(!uploadMediaStatus)}>Upload Pictures</button>
-                          )
-                      }
+                      <button className="btn btn-outline-dark"
+                        onClick={() => uploadMedia(!uploadMediaStatus)}>Upload Pictures</button>
                     </div>
                   </div>
                 </div>
@@ -220,6 +202,40 @@ class TaskDetails extends React.Component {
               </div>
             </div>
           </div>
+          {
+            uploadMediaStatus ? (
+              <div className="uploadMediaForm">
+                <form onSubmit={(e) => this.upload(e, taskDetails._id)}>
+                  <h3>Upload Media for the task</h3>
+                  <div className="input-group mb-3 mt-3">
+                    <div className="custom-file">
+                      <input type="file" className="custom-file-input" accept="image/*"
+                        id="inputGroupFile01" onChange={(e) => this.handleFileChange(e)} />
+                      <label className="custom-file-label" htmlFor="inputGroupFile01">{
+                        this.state.inputMediaName ? this.state.inputMediaName : 'Choose file'
+                      }</label>
+                    </div>
+                  </div>
+                  {
+                    this.state.error !== '' ? (
+                      <p className="text-danger">{this.state.error}</p>
+                    ) : ''
+                  }
+                  {
+                    this.state.inputMediaUrl ?
+                      <img src={this.state.inputMediaUrl} alt={this.state.inputMediaName} className="img-fluid" />
+                      : ''
+                  }
+                  <div className="input-group mt-3">
+                    <button className="btn btn-primary" type="submit">Upload</button>
+                    <button className="btn btn-link-danger" type="reset"
+                      onClick={() => uploadMedia(!uploadMediaStatus)}>Close</button>
+                  </div>
+                </form>
+              </div>
+            ) :
+              ""
+          }
         </div>
       ) : null
     );
@@ -246,6 +262,10 @@ const mapDispatchToProps = (dispatch) => ({
   },
   uploadMedia: (flag) => {
     dispatch(startUploadingMedia(flag))
+  },
+  setEditingTaskFunc: (taskData, _history) => {
+    dispatch(setEditingTask(taskData));
+    _history.push(`/edit-task/1/${taskData._id}`);
   }
 })
 export default connect(mapStateToProps, mapDispatchToProps)(TaskDetails);

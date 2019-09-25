@@ -1,4 +1,5 @@
 import { fetchTaskListData, toggleTaskStatusFunc } from "../../utilities/service";
+import { fetchTasDetailsSuccess } from "./taskDetailActions";
 
 export const taskListActionTypes = {
   DUE_DATE: 'DUE_DATE',
@@ -61,13 +62,13 @@ export const fetchTaskList = (id) => {
   }
 }
 
-export const toggleTaskStatus = (id, flag) => {
+export const toggleTaskStatus = (id, flag, page, taskBoardId) => {
   return async dispatch => {
     dispatch(fetchTaskListBegins());
     try {
       const resData = await toggleTaskStatusFunc(id, flag);
       await resData.status === 1 ?
-        dispatch(fetchTaskListSuccess(resData.data)) :
+        page === 'list' ? dispatch(fetchTaskList(taskBoardId)) : dispatch(fetchTasDetailsSuccess(resData.data)) :
         dispatch(fetchTaskListError(resData))
     }
     catch (err) {

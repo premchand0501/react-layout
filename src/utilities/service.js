@@ -1,18 +1,15 @@
-import { saveUserData } from "../store/actions/userAction";
-
 export const baseUrl = 'http://localhost:4000';
 
 export const authenticate = async ({ id }) => {
   if (id == null) {
-    return false;
+    return null;
   }
   const res = await fetch(`${baseUrl}/users/${id}`);
   const resData = await res.json();
   if (resData && resData.status === 1) {
-    await saveUserData(true, resData.data);
-    return true;
+    return resData.data;
   }
-  return false;
+  return null;
 }
 
 export const fetchTaskGroupData = async () => {
@@ -45,6 +42,12 @@ export const fetchAttachedPictureData = async (id) => {
   return data;
 }
 
+export const fetchAllUsers = async () => {
+  const res = await fetch(`${baseUrl}/users`);
+  const data = await res.json();
+  return data;
+}
+
 export const removeAttachedPictureData = async (id) => {
   const res = await fetch(`${baseUrl}/delete-media/${id}`, {
     method: 'DELETE'
@@ -65,12 +68,37 @@ export const uploadAttachedPictureData = async (id, file) => {
   return data;
 }
 
-export const toggleTaskStatusFunc = async (id, flag) => {
+export const toggleTaskStatusFunc = async (_id, flag) => {
   const res = await fetch(`${baseUrl}/update-task`, {
     body: JSON.stringify({
-      id,
+      _id,
       status: flag,
     }),
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
+  const data = await res.json();
+  return data;
+}
+
+export const updateTaskDataFunc = async (reqData) => {
+  const res = await fetch(`${baseUrl}/update-task`, {
+    body: JSON.stringify(reqData),
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
+  const data = await res.json();
+  return data;
+}
+
+export const createNewTask = async (reqData) => {
+  console.log(reqData);
+  const res = await fetch(`${baseUrl}/create-new-task`, {
+    body: JSON.stringify(reqData),
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'

@@ -25,7 +25,7 @@ class TaskGroup extends React.Component {
                   view ? <FontAwesomeIcon icon={faList} /> : <FontAwesomeIcon icon={faColumns} />
                 }
                 {
-                  (view ? ' List' : ' Grid') + ' View'
+                  (!view ? ' List' : ' Grid') + ' View'
                 }
               </button>
             </h1>
@@ -35,7 +35,7 @@ class TaskGroup extends React.Component {
               taskGroupId={match.params.id}
               currentFilter={currentFilter}
               order={order}
-              sortBy={(filter) => sortBy(filter, match.params.id, filter === currentFilter)} />
+              sortBy={(filter) => sortBy(filter, match.params.id, order)} />
           </div>
         </div>
       </div> : null
@@ -50,6 +50,7 @@ const mapStateToProps = (state) => ({
 });
 const mapDispatchToProps = (dispatch) => ({
   sortBy: (filter, taskId, order) => {
+    console.log(filter, taskId, order);
     dispatch(sortTaskListBy(filter, taskId, order));
   },
   toggleViewFunc: () => {
@@ -62,4 +63,4 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(fetchTaskGroupDetailsBy(id));
   }
 })
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(TaskGroup));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(TaskGroup));

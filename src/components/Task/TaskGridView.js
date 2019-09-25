@@ -16,7 +16,7 @@ const TaskGridView = ({ taskListData, draggingTask, dropEl }) => (
       </div>
     </div>
     <div className="row">
-      <Droppable className="col col-6" handleDrop={() => dropEl(draggingTask.id, !draggingTask.status)}>
+      <Droppable className="col col-6" handleDrop={() => dropEl(draggingTask.id, !draggingTask.status, draggingTask.taskBoardId)}>
         <div className="row" onDragOver={(e) => e.preventDefault()}>
           {
             taskListData.filter(item => item.status === false).map((taskListItem, index) => (
@@ -25,7 +25,7 @@ const TaskGridView = ({ taskListData, draggingTask, dropEl }) => (
           }
         </div>
       </Droppable>
-      <Droppable className="col col-6" handleDrop={() => dropEl(draggingTask.id, !draggingTask.status)}>
+      <Droppable className="col col-6" handleDrop={() => dropEl(draggingTask.id, !draggingTask.status, draggingTask.taskBoardId)}>
         <div className="row" onDragOver={(e) => e.preventDefault()}>
           {
             taskListData.filter(item => item.status === true).map((taskListItem, index) => (

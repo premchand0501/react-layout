@@ -29,11 +29,11 @@ class TaskGroupList extends React.Component {
                 <Link className="col col-4 text-dark text-decoration-none"
                   to={`/tasks/${item._id}`} key={index}>
                   <div className="card h-100">
-                    <div className="card-header bg-white">
+                    {/* <div className="card-header bg-white">
                       <div className="progress">
                         <div className="progress-bar" role="progressbar" style={{ width: '25%' }}></div>
                       </div>
-                    </div>
+                    </div> */}
                     <div className="card-body">
                       <h6>{item.taskName}</h6>
                     </div>

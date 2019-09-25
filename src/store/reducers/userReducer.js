@@ -2,21 +2,22 @@ import { userActionTypes } from "../actions/userAction";
 
 const initialState = {
   loginStatus: false,
-  userData: {}
+  userData: null,
+  allUsers: [],
 }
 
 const userReducer = (state = initialState, action) => {
   switch (action.type) {
     case userActionTypes.LOGIN:
-      let { loginStatus, userData } = state;
-      loginStatus = action.loginStatus;
-      userData = action.userData;
-      if (userData && !userData.hasOwnProperty('_id')) {
+      console.log(action)
+      if (action.userData && !action.userData.hasOwnProperty('_id')) {
         return { ...state };
       }
-      localStorage.setItem('id', userData._id);
-      return { loginStatus, userData };
-    default: return {};
+      localStorage.setItem('id', action.userData._id);
+      return { ...state, loginStatus: action.loginStatus, userData: action.userData };
+    case userActionTypes.SUCCESS:
+      return { ...state, allUsers: action.payload }
+    default: return { ...state };
   }
 }
 export default userReducer;
