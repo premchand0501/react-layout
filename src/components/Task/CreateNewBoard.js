@@ -2,6 +2,7 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { connect } from 'react-redux';
+import { createNewTaskBoardDispatcher } from '../../store/actions/taskGroupActions';
 
 class CreateNewBoard extends React.Component {
   state = {
@@ -21,9 +22,19 @@ class CreateNewBoard extends React.Component {
   }
   handleSubmit(e) {
     e.preventDefault();
+    console.log(this.props.userReducer)
+    if (this.props.userReducer.userData != null) {
+      const userData = this.props.userReducer.userData;
+      const data = { ...this.state };
+      data.creatorId = userData._id;
+      this.props.createNewBoardFunc(data)
+    }
   }
   render() {
-    const { history } = this.props;
+    const { history, taskGroupReducer } = this.props;
+    if (taskGroupReducer && taskGroupReducer.createNewTaskBoard != null) {
+      history.go(-1);
+    }
     return (
       <div className="container mt-3 mb-3">
         <div className="row">
@@ -72,9 +83,12 @@ class CreateNewBoard extends React.Component {
   }
 }
 const mapStateToProps = (state) => ({
-  userReducer: state.userReducer
+  userReducer: state.userReducer,
+  taskGroupReducer: state.taskGroupReducer,
 });
 const mapDispatchToProps = (dispatch) => ({
-
+  createNewBoardFunc(data) {
+    dispatch(createNewTaskBoardDispatcher(data))
+  }
 })
 export default connect(mapStateToProps, mapDispatchToProps)(CreateNewBoard);

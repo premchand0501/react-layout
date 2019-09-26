@@ -143,7 +143,7 @@ class TaskDetails extends React.Component {
                     </div>
                   </div>
                   {
-                    taskDetails.assignee ? (
+                    taskDetails.assignee != null ? (
                       <div className="row mb-3">
                         <div className="col col-12">
                           <p className="title-header">ASSIGNEE</p>
@@ -153,7 +153,7 @@ class TaskDetails extends React.Component {
                     ) : null
                   }
                   {
-                    taskDetails.reporter ? (
+                    taskDetails.reporter != null ? (
                       <div className="row mb-3">
                         <div className="col col-12">
                           <p className="title-header">Reporter</p>
@@ -163,7 +163,7 @@ class TaskDetails extends React.Component {
                     ) : null
                   }
                   {
-                    taskDetails.priority ? (
+                    taskDetails.priority != null ? (
                       <div className="row mb-3">
                         <div className="col col-12">
                           <p className="title-header">Priority</p>
@@ -179,7 +179,7 @@ class TaskDetails extends React.Component {
                   <div className="row">
                     <div className="col col-12 text-light">
                       {
-                        taskDetails.createdOn ? (
+                        taskDetails.createdOn != null ? (
                           <p className="mb-1"><small>Created {
                             new Date(taskDetails.createdOn).toLocaleDateString() + ' ' +
                             new Date(taskDetails.createdOn).toLocaleTimeString()
@@ -189,7 +189,7 @@ class TaskDetails extends React.Component {
                     </div>
                     <div className="col col-12 text-light">
                       {
-                        taskDetails.createdOn ? (
+                        taskDetails.updatedOn != null ? (
                           <p className="m-0"><small>Updated {
                             new Date(taskDetails.updatedOn).toLocaleDateString() + ' ' +
                             new Date(taskDetails.updatedOn).toLocaleTimeString()

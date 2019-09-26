@@ -53,8 +53,8 @@ const TaskForm = ({ taskData, handleInputChange, allUsers, handleUserChange, han
       <div className="form-group">
         <span>Priority</span>
         <select name="priority" value={priority} className="form-control"
-          onChange={(e) => handleInputChange(e)}>
-          <option value="-1" disabled={priority < 0}>Select priority</option>
+          onChange={(e) => handleInputChange(e)} required>
+          <option value="" disabled={priority < 0}>Select priority</option>
           <option value="0">Low</option>
           <option value="1">Medium</option>
           <option value="2">High</option>
@@ -63,7 +63,7 @@ const TaskForm = ({ taskData, handleInputChange, allUsers, handleUserChange, han
       <div className="form-group">
         <span>Select Assignee</span>
         <select name="assigneeId" value={assigneeId} className="form-control"
-          onChange={(e) => handleUserChange(e)}>
+          onChange={(e) => handleUserChange(e)} required>
           <option value="" disabled={assigneeId === ''}>Select assignee</option>
           {
             allUsers && allUsers.map((user, index) => (

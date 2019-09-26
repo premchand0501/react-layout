@@ -14,7 +14,7 @@ class Auth extends React.Component {
   }
   async componentDidMount() {
     const userData = await authenticate({ id: localStorage.getItem('id') });
-    console.log(this.props.location);
+    // console.log(this.props.location);
     if (userData != null) {
       return <Redirect to="/" />
     }
@@ -55,7 +55,7 @@ class Auth extends React.Component {
   }
   render() {
     const { loginStatus } = this.props.userReducer;
-    console.log(this.props);
+    // console.log(this.props);
     if (loginStatus) {
       return <Redirect to={`${this.state.from}`} />
     }

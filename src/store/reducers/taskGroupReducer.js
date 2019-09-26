@@ -1,13 +1,13 @@
 import { fetchTaskGroupActions } from "../actions/taskGroupActions";
-import { taskGroupData } from "../../assets/json/task";
 
 const _taskGroupState = {
-  taskGroupData,
+  taskGroupData: [],
   currentFilter: '',
   order: false,
   view: false,
   taskGroupId: -1,
   taskListItemId: -1,
+  createNewTaskBoard: null,
 }
 
 const taskGroupReducer = (taskGroupState = _taskGroupState, action) => {
@@ -15,7 +15,11 @@ const taskGroupReducer = (taskGroupState = _taskGroupState, action) => {
     case fetchTaskGroupActions.SUCCESS:
       return { ...taskGroupState, taskGroupData: action.payload };
     case fetchTaskGroupActions.DETAILS:
-      return { taskGroupData: action.payload };
+      return { ...taskGroupState, taskGroupData: action.payload };
+    case fetchTaskGroupActions.CREATE_NEW_TASK:
+      return { ...taskGroupState, createNewTaskBoard: action.payload };
+    case fetchTaskGroupActions.NULL_CREATE_NEW_TASK:
+      return { ...taskGroupState, createNewTaskBoard: null };
     default:
       return { ...taskGroupState };
   }

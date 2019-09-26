@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getAllUsers } from '../../store/actions/userAction';
-import { updateTaskDetails } from '../../store/actions/taskDetailActions';
+import { updateTaskDetails, fetchTasDetailsSuccess } from '../../store/actions/taskDetailActions';
 import TaskForm from './TaskForm';
 
 class EditTask extends React.Component {
@@ -73,14 +73,14 @@ class EditTask extends React.Component {
     if (this.state.subTaskName !== '' && this.state.subTaskDesc !== '' &&
       this.state.startDate !== '' && this.state.endDate !== '' &&
       this.state.assigneeId !== '' && this.state.assignee !== null) {
-      const { match, history } = this.props;
+      const { match } = this.props;
       const taskData = { ...this.state };
       delete taskData['assigneeId'];
       if (match.params.action === '0') {
         taskData.taskBoardId = match.params.taskBoardId;
         delete taskData['_id'];
       }
-      this.props.updateTaskDetailsFunc(taskData, match.params.action, history);
+      this.props.updateTaskDetailsFunc(taskData, match.params.action);
     }
   }
   getRespMsg(taskUpdateRes, history) {
@@ -108,7 +108,6 @@ class EditTask extends React.Component {
   }
   render() {
     const { editingTask, allUsers, taskUpdateRes, history, match } = this.props;
-    // console.log(match);
     return (
       <div className="container-fluid editTask">
         <div className="card">
@@ -138,11 +137,10 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   getAllUsersFunc: () => {
     dispatch(getAllUsers());
+    // dispatch(fetchTasDetailsSuccess());
   },
-  updateTaskDetailsFunc: (data, action, history) => {
+  updateTaskDetailsFunc: (data, action) => {
     dispatch(updateTaskDetails(data, action));
-    if (action === '0')
-      history.go(-1);
   },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(EditTask);

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import TaskItem from './TaskItem';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -8,16 +8,12 @@ import { connect } from 'react-redux';
 import TaskGridView from './TaskGridView';
 import { taskListActionTypes, toggleTaskStatus } from '../../store/actions/taskListActions';
 
-const TaskList = ({ taskListData, sortBy, currentFilter, order, view, toggleTaskStatus }) => (
+const TaskList = ({ taskListData, sortBy, currentFilter, order, view, toggleTaskStatus, taskGroupId }) => (
   <ul className="list-group">
     <li className="list-group-item list-header">
-      {
-        taskListData && taskListData.length ? (
-          <div className="col col-6 p-0">
-            <Link to={`/add-task/0/${taskListData[0].taskBoardId}`} className="btn btn-primary">Add Task</Link>
-          </div>
-        ) : ''
-      }
+      <div className="col col-6 p-0">
+        <Link to={`/add-task/0/${taskGroupId}`} className="btn btn-primary">Add Task</Link>
+      </div>
       {
         view ? (
           <div className="col col-6 p-0">
@@ -77,4 +73,4 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(toggleTaskStatus(id, status, 'list', taskBoardId));
   }
 })
-export default connect(mapStateToProps, mapDispatchToProps)(TaskList);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(TaskList));

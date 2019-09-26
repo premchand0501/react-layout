@@ -19,6 +19,7 @@ const PrivateRoute = ({ path, userReducer, component: Component, saveUserDataFun
               if (isLoading) return 'Loading...';
               if (err) return `Something went wrong: ${err.msg}`;
               if (data != null) {
+                saveUserDataFunc(data);
                 return <Component {...props} />
               }
               return <Redirect to={{

@@ -4,36 +4,32 @@ import { connect } from 'react-redux';
 import { getDateFormatted } from '../../utilities/utility';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { fetchTaskGroup } from '../../store/actions/taskGroupActions';
+import { fetchTaskGroup, setCreateNewBoardDataNull } from '../../store/actions/taskGroupActions';
 import { fetchTaskGroupData } from '../../utilities/service';
 
 class TaskGroupList extends React.Component {
   componentDidMount() {
     this.props.taskGroupListFunc();
+    this.props.setCreateNewBoardDataNullFunc();
   }
   render() {
     let taskGroupList = this.props.taskGroupList;
     return (
-      taskGroupList && taskGroupList.length > 0 ? (
-        <div className="container mt-3">
-          <h1 className="mb-3">Task Boards</h1>
-          <div className="row">
-            <Link className="col col-4 text-dark text-decoration-none" to={`/create-new-board`}>
-              <div className="card text-center h-100 d-flex align-item-center justify-content-center">
-                <span><FontAwesomeIcon icon={faPlus} /><br /></span>
-                <span>Create New Board</span>
-              </div>
-            </Link>
-            {
+      <div className="container mt-3">
+        <h1 className="mb-3">Task Boards</h1>
+        <div className="row">
+          <Link className="col col-4 text-dark text-decoration-none" to={`/create-new-board`}>
+            <div className="card text-center h-100 d-flex align-item-center justify-content-center">
+              <span><FontAwesomeIcon icon={faPlus} /><br /></span>
+              <span>Create New Board</span>
+            </div>
+          </Link>
+          {
+            taskGroupList && taskGroupList.length > 0 ? (
               taskGroupList.map((item, index) => (
                 <Link className="col col-4 text-dark text-decoration-none"
                   to={`/tasks/${item._id}`} key={index}>
                   <div className="card h-100">
-                    {/* <div className="card-header bg-white">
-                      <div className="progress">
-                        <div className="progress-bar" role="progressbar" style={{ width: '25%' }}></div>
-                      </div>
-                    </div> */}
                     <div className="card-body">
                       <h6>{item.taskName}</h6>
                     </div>
@@ -54,10 +50,10 @@ class TaskGroupList extends React.Component {
                   </div>
                 </Link>
               ))
-            }
-          </div>
+            ) : null
+          }
         </div>
-      ) : null
+      </div>
     )
   }
 }
@@ -68,6 +64,9 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   taskGroupListFunc: () => {
     dispatch(fetchTaskGroup(fetchTaskGroupData))
+  },
+  setCreateNewBoardDataNullFunc() {
+    dispatch(setCreateNewBoardDataNull())
   }
 });
 

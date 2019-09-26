@@ -1,4 +1,4 @@
-export const baseUrl = 'http://localhost:4000';
+export const baseUrl = process.env.NODE_ENV !== 'production' ? 'http://localhost:4000' : 'https://node-taskman.herokuapp.com';
 
 export const authenticate = async ({ id }) => {
   if (id == null) {
@@ -98,6 +98,19 @@ export const updateTaskDataFunc = async (reqData) => {
 export const createNewTask = async (reqData) => {
   console.log(reqData);
   const res = await fetch(`${baseUrl}/create-new-task`, {
+    body: JSON.stringify(reqData),
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
+  const data = await res.json();
+  return data;
+}
+
+export const createNewBoard = async (reqData) => {
+  console.log(reqData);
+  const res = await fetch(`${baseUrl}/create-new-board`, {
     body: JSON.stringify(reqData),
     method: 'POST',
     headers: {
